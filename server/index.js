@@ -13,7 +13,8 @@ const app = express()
 const server = http.createServer(app)
 const io = socketio(server, {
   cors: {
-    origin: "http://localhost:3000",
+    // origin: "https://611d7c9452081b145f4a7732--training-react-chat.netlify.app",
+    origin: 'http://localhost:3000 ',
     methods: ["GET", "POST"]
   }
 })
@@ -24,7 +25,6 @@ app.use(router)
 
 
 io.on('connection', (socket) => {
-  console.log('*');
 
   socket.on('join', ({ name, room }, callback) => { // событие при подтверждении первичной формы
     const { error, user } = addUser({ id: socket.id, name, room })
@@ -45,7 +45,6 @@ io.on('connection', (socket) => {
     const user = getUser(socket.id)
 
     io.to(user.room).emit('message', { user: user.name, text: message })
-    io.to(user.room).emit('roomData', { user: user.name, text: message })
 
     callback()
   })
